@@ -26,9 +26,13 @@ const App = () => {
         },
       };
       const URL = query
-        ? `${BASE_API_URL}/search/movie?query=${encodeURIComponent(query)}`
-        : `${BASE_API_URL}/discover/movie?sort_by=popularity.desc`;
+        ? `${BASE_API_URL}/search/movie?include_adult=true&query=${encodeURIComponent(
+            query
+          )}`
+        : `${BASE_API_URL}/discover/movie?sort_by=popularity.desc&include_adult=true`;
+
       const res = await fetch(URL, options);
+
       if (res.status !== 200) {
         throw new Error("Failed to fetch data", res?.message);
       }
@@ -71,7 +75,7 @@ const App = () => {
         <header>
           <img src="./hero-img.png" alt="Hero banner" />
           <h2 className="text-center text-5xl">
-            Find your favorite <span className="text-gradient"> Movies </span>
+            Find your Favorite <span className="text-gradient"> Movies </span>
             here
           </h2>
         </header>
@@ -82,7 +86,7 @@ const App = () => {
             <ul>
               {trendingMovies.map((movie, index) => (
                 <li key={index}>
-                  <p>{index + 1}</p>
+                  <p className="text-blue-900">{index + 1}</p>
                   <img src={movie.poster_url} alt={movie.title} />
                 </li>
               ))}
@@ -92,7 +96,7 @@ const App = () => {
 
         <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm} />
         <section className="all-movies">
-          <h2 className="mt-10 ml-10">All movies</h2>
+          <h2 className="mt-10 ml-10">All Movies</h2>
 
           {loading ? (
             <Spinner />

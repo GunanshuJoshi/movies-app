@@ -17,7 +17,7 @@
 
   --breakpoint-xs: 480px;
 
-  --background-image-hero-pattern: url("/hero-bg.png");
+  --background-image-hero-pattern: url("/public/red-curtains.jpg");
 }
 
 @layer base {
@@ -49,12 +49,36 @@
 }
 
 @layer components {
-  .pattern {
-    @apply bg-hero-pattern w-screen h-screen bg-center bg-cover absolute z-0;
-  }
 
+  .pattern {
+    @apply w-screen h-screen bg-center bg-cover absolute z-0;
+    background-image: 
+      linear-gradient(
+        to bottom,
+        rgba(3, 0, 20, 0) 0%,
+        rgba(3, 0, 20, 0.6) 50%,
+        rgba(3, 0, 20, 0.8) 75%,
+        rgba(3, 0, 20, 1) 100%
+      ),
+      url("/red-curtains.jpg");
+    background-position: center top;
+    background-size: cover;
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 60%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+  
+  main {
+    @apply min-h-screen relative bg-primary;
+    background: #030014;  /* This matches your --color-primary variable */
+  }
+  
   .wrapper {
     @apply px-5 py-12 xs:p-10 max-w-7xl mx-auto flex flex-col relative z-10;
+    background: transparent;
   }
 
   .trending {
@@ -78,7 +102,7 @@
   }
 
   .search {
-    @apply w-full bg-light-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
+    @apply w-full bg-dark-100/5 px-4 py-3 rounded-lg mt-10 max-w-3xl mx-auto;
 
     & div {
       @apply relative flex items-center;

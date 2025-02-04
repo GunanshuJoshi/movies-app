@@ -11,6 +11,7 @@ const client = new Client()
 const database = new Databases(client);
 
 export const updateSearchKeyWord = async (searchKeyword, movie) => {
+  if (movie.adult) return;
   try {
     const res = await database.listDocuments(DB_ID, COLLECTION_ID, [
       Query.equal("searchKeyword", searchKeyword),
@@ -26,10 +27,13 @@ export const updateSearchKeyWord = async (searchKeyword, movie) => {
         searchKeyword,
         count: 1,
         movie_id: movie.id,
+        adult: movie.adult,
         poster_url: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("🚀 ~ updateSearchKeyWord ~ error:", error);
+  }
 };
 
 export const getTrendingList = async () => {
