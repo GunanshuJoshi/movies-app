@@ -4,6 +4,7 @@ import MovieCard from "./components/MovieCard";
 import Spinner from "./components/Spinner";
 import { useDebounce } from "use-debounce";
 import { updateSearchKeyWord, getTrendingList } from "./appWrite";
+import HeroCard from "./components/HeroCard";
 
 const BASE_API_URL = "https://api.themoviedb.org/3";
 const App = () => {
@@ -13,7 +14,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [debouncedSearchTerm] = useDebounce(searchTerm, 2500);
   const [trendingMovies, setTrendingMovies] = useState([]);
-
+  const [randowImages, setRandowImages] = useState([]);
   const fetchData = async (query = "") => {
     setLoading(true);
     setError("");
@@ -42,9 +43,8 @@ const App = () => {
       if (query && data.length > 0) {
         await updateSearchKeyWord(query, data[0]);
       }
-      console.log("🚀 ~ fetchData ~ data:", data);
+      setHeroImage(data);
     } catch (error) {
-      console.log("🚀 ~ fetchData ~ error:", error);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -68,12 +68,24 @@ const App = () => {
     getTrendingMovies();
   }, []);
 
+  const setHeroImage = (data) => {
+    if (data.length < 3) return;
+    const indices = new Set();
+    while (indices.size < 3) {
+      indices.add(Math.floor(Math.random() * data.length));
+    }
+    const randomImages = [...indices].map((index) => data[index].poster_path);
+    setRandowImages(randomImages);
+  };
+
   return (
     <main>
       <div className="pattern" />
       <div className="wrapper">
         <header>
-          <img src="./hero-img.png" alt="Hero banner" />
+          {/* <img src="./hero-img.png" alt="Hero banner" /> */}
+          {randowImages.length > 0 && <HeroCard randowImages={randowImages} />}
+
           <h2 className="text-center text-5xl">
             Find your Favorite <span className="text-gradient"> Movies </span>
             here
